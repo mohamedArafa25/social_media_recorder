@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -97,15 +98,14 @@ class SoundRecordNotifier extends ChangeNotifier {
   Future<String> getFilePath() async {
     String _sdPath = "";
     Directory tempDir = await getTemporaryDirectory();
-    _sdPath =
-    initialStorePathRecord.isEmpty ? tempDir.path : initialStorePathRecord;
+    _sdPath = initialStorePathRecord.isEmpty ? tempDir.path : initialStorePathRecord;
     var d = Directory(_sdPath);
     if (!d.existsSync()) {
       d.createSync(recursive: true);
     }
     DateTime now = DateTime.now();
     String convertedDateTime =
-        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}-${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}-${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}";
     convertedDateTime = convertedDateTime.replaceAll(":", ".");
     String storagePath = "$_sdPath/$convertedDateTime.mp3";
     mPath = storagePath;
@@ -182,7 +182,7 @@ class SoundRecordNotifier extends ChangeNotifier {
       buttonPressed = true;
       String recordFilePath = await getFilePath();
       _timer = Timer(const Duration(milliseconds: 900), () {
-        recordMp3.start( recordFilePath, (error) {
+        recordMp3.start(recordFilePath, (error) {
           print('error: $error');
         });
       });
