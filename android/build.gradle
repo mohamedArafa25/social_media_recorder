@@ -1,35 +1,59 @@
-buildscript {
-    ext.kotlin_version = '1.9.22'
-    repositories {
-        google()
-        mavenCentral()
-        maven {
-            url = uri("https://storage.googleapis.com/r8-releases/raw")
-        }
-    }
+plugins {
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.0'
-        classpath("com.android.tools:r8:8.2.24") // Add the R8 dependency here
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
+//        maven { url 'https://maven.zoom.us/artifactory/maven' }
     }
 }
 
-rootProject.buildDir = '../build'
+rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 subprojects {
-    project.evaluationDependsOn(':app')
+    project.evaluationDependsOn(":app")
 }
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+//buildscript {
+//    ext.kotlin_version = '1.9.22'
+//    repositories {
+//        google()
+//        mavenCentral()
+//        maven {
+//            url = uri("https://storage.googleapis.com/r8-releases/raw")
+//        }
+//    }
+//
+//    dependencies {
+//        classpath 'com.android.tools.build:gradle:7.2.0'
+//        classpath("com.android.tools:r8:8.2.24") // Add the R8 dependency here
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
+//
+//allprojects {
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//}
+//
+//rootProject.buildDir = '../build'
+//subprojects {
+//    project.buildDir = "${rootProject.buildDir}/${project.name}"
+//}
+//subprojects {
+//    project.evaluationDependsOn(':app')
+//}
+//
+//tasks.register("clean", Delete) {
+//    delete rootProject.buildDir
+//}
