@@ -3,6 +3,8 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record_mp3_plus/record_mp3_plus.dart';
@@ -173,11 +175,34 @@ class SoundRecordNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  record(Function()? startRecord) async {
+  Future<void> showToastWithoutContext({
+    required String msg,
+    Color backgroundColor = Colors.black,
+    Color textColor = Colors.white,
+    Toast? toastLength = Toast.LENGTH_LONG,
+  }) async {
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: toastLength,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: toastLength == Toast.LENGTH_LONG ? 3 : 1,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      fontSize: 14,
+    );
+  }
+
+  record(Function()? startRecord, bool isArabic) async {
     if ((await Permission.microphone.isGranted) != true) {
       await Permission.microphone.request();
       await Permission.storage.request();
-      _isAcceptedPermission = true;
+      if ((await Permission.microphone.isGranted) != true) {
+        _isAcceptedPermission = false;
+        showToastWithoutContext(msg: isArabic? 'يرجى الموافقة على إذن الميكروفون' : 'Please accept microphone permission');
+        return;
+      } else {
+        _isAcceptedPermission = true;
+      }
     } else {
       buttonPressed = true;
       String recordFilePath = await getFilePath();

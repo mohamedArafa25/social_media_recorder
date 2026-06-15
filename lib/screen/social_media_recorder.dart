@@ -21,6 +21,8 @@ class SocialMediaRecorder extends StatefulWidget {
   /// function called when start recording
   final Function()? startRecording;
 
+  final bool isArabic;
+
   /// function called when stop recording, return the recording time (even if time < 1)
   final Function(String time)? stopRecording;
 
@@ -91,6 +93,7 @@ class SocialMediaRecorder extends StatefulWidget {
     this.storeSoundRecoringPath = "",
     required this.sendRequestFunction,
     this.startRecording,
+    required this.isArabic,
     this.stopRecording,
     this.recordIcon,
     this.lockButton,
@@ -206,7 +209,7 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
         state.resetEdgePadding();
 
         soundRecordNotifier.isShow = true;
-        state.record(widget.startRecording);
+        state.record(widget.startRecording, widget.isArabic);
       },
       onPointerUp: (details) async {
         if (!state.isLocked) {
