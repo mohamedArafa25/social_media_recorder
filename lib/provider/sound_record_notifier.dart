@@ -198,7 +198,7 @@ class SoundRecordNotifier extends ChangeNotifier {
       await Permission.storage.request();
       if ((await Permission.microphone.isGranted) != true) {
         _isAcceptedPermission = false;
-        showToastWithoutContext(msg: isArabic? 'يرجى الموافقة على إذن الميكروفون' : 'Please accept microphone permission');
+        showToastWithoutContext(msg: isArabic? 'يرجى الموافقة على إذن الميكروفون من الإعدادات' : 'Please accept microphone permission from Settings');
         return;
       } else {
         _isAcceptedPermission = true;
